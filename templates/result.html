@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Descriptions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card-img-top {
+            max-width: 400px; /* Set maximum width for the image */
+            height: auto;
+            display: block;
+            margin: 0 auto; /* Center the image */
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Image Descriptions</h1>
+        <form action="/download_report" method="post">
+            {% for details, image_path in zip(details_list, image_paths) %}
+            <div class="card">
+                <img src="{{ url_for('static', filename=image_path) }}" class="card-img-top" alt="Uploaded Image">
+                <div class="card-body">
+                    <h5>Description:</h5>
+                    <p><strong>Speed of Vehicle:</strong> {{ details.speed }}</p>
+                    <p><strong>Time:</strong> {{ details.time }}</p>
+                    <p><strong>Number of People:</strong> {{ details.num_people }}</p>
+                    <p><strong>Degree of Vehicle:</strong> {{ details.degree }}</p>
+                    <p><strong>Incident:</strong> {{ details.incident }}</p>
+                    <p><strong>Full Description:</strong> {{ details.full_description }}</p>
+                </div>
+            </div>
+            <input type="hidden" name="details_list" value='{{ details | tojson }}'>
+            <input type="hidden" name="image_paths" value="{{ image_path }}">
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">Download Report</button>
+        </form>
+        <a href="/" class="btn btn-secondary btn-block">Upload more images</a>
+    </div>
+</body>
+</html>
